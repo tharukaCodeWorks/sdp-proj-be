@@ -1,13 +1,13 @@
-package org.devsdp.wscms.auth;
+package org.devsdp.wscms;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AuthApplication {
+public class ComplaintApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AuthApplication.class, args);
+		SpringApplication.run(ComplaintApplication.class, args);
 	}
 
 }
