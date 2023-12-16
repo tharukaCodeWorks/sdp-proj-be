@@ -1,5 +1,6 @@
 package org.devsdp.wscms.complaint.dao;
 
+import org.devsdp.wscms.complaint.model.SysUser;
 import org.springframework.data.repository.CrudRepository;
 
 /**

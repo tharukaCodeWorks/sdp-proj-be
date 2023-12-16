@@ -1,9 +1,7 @@
-package org.devsdp.wscms.complaint.dto.responses;
-
-import lombok.*;
+package org.devsdp.wscms.complaint.dao.projection;
 
 
-public interface DivisionResponseDto {
+public interface DivisionDataProjection {
          long getId();
          String getDivisionName();
          String getProvince();

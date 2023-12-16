@@ -2,8 +2,9 @@ package org.devsdp.wscms.auth.controller;
 
 import org.devsdp.wscms.auth.dto.ConfirmEmailDto;
 import org.devsdp.wscms.auth.dto.LoginUserDto;
-import org.devsdp.wscms.auth.dto.ResponseWrapper;
+import org.devsdp.wscms.sys.dto.ResponseWrapper;
 import org.devsdp.wscms.auth.dto.UserDto;
+import org.devsdp.wscms.auth.dto.responses.SignupResponse;
 import org.devsdp.wscms.auth.exceptions.EmailAlreadyException;
 import org.devsdp.wscms.auth.exceptions.EmailNotVerifiedException;
 import org.devsdp.wscms.auth.exceptions.InvalidCodeException;
@@ -27,80 +28,80 @@ public class AuthController {
     @PostMapping(value = "/sign-in")
     public ResponseEntity<ResponseWrapper> signIn(@RequestBody LoginUserDto loginUserDto) throws AuthenticationException {
         try{
-            return ResponseEntity.ok(new ResponseWrapper(authService.signIn(loginUserDto), "success", "User authentication successful"));
+            return ResponseEntity.ok(new ResponseWrapper<>(authService.signIn(loginUserDto), "success", "User authentication successful"));
         } catch (EmailNotVerifiedException emailNotVerifiedException){
-            return ResponseEntity.ok(new ResponseWrapper(null, "un-verified", emailNotVerifiedException.getMessage()));
+            return ResponseEntity.ok(new ResponseWrapper<>(null, "un-verified", emailNotVerifiedException.getMessage()));
         } catch (InvalidCredentialsException invalidCredentialsException) {
-            return ResponseEntity.ok(new ResponseWrapper(null, "wrong", invalidCredentialsException.getMessage()));
+            return ResponseEntity.ok(new ResponseWrapper<>(null, "wrong", invalidCredentialsException.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.ok(new ResponseWrapper(null, "failed", "Something went wrong! Please contact developer"));
+            return ResponseEntity.ok(new ResponseWrapper<>(null, "failed", "Something went wrong! Please contact developer"));
         }
     }
 
     @PostMapping(value = "/signup")
-    public Object saveUser(@RequestBody UserDto user) {
+    public ResponseWrapper<SignupResponse> saveUser(@RequestBody UserDto user) {
         try {
-            return new ResponseWrapper(authService.signUp(user), "success", "User successfully registered");
+            return new ResponseWrapper<>(authService.signUp(user), "success", "User successfully registered");
         } catch (EmailAlreadyException emailAlreadyException) {
-            return new ResponseWrapper(null, "already", emailAlreadyException.getMessage());
+            return new ResponseWrapper<>(null, "already", emailAlreadyException.getMessage());
         } catch (IOException ioException) {
-            return new ResponseWrapper(null, "email-sending-failed", "Email sending failed");
+            return new ResponseWrapper<>(null, "email-sending-failed", "Email sending failed");
         } catch (Exception exception) {
-            return new ResponseWrapper(null, "failed", "Something went wrong! Please contact developer");
+            return new ResponseWrapper<>(null, "failed", "Something went wrong! Please contact developer");
         }
     }
 
     @PostMapping(value = "/email/verify")
     public ResponseWrapper verifyEmail(@RequestBody ConfirmEmailDto confirm) throws IOException {
         try {
-            return new ResponseWrapper(authService.verifyEmail(confirm), "success", "Email verification Success");
+            return new ResponseWrapper<>(authService.verifyEmail(confirm), "success", "Email verification Success");
         } catch (InvalidCredentialsException invalidCredentialsException) {
-            return new ResponseWrapper(null, "wrong-email", invalidCredentialsException.getMessage());
+            return new ResponseWrapper<>(null, "wrong-email", invalidCredentialsException.getMessage());
         } catch (InvalidCodeException invalidCodeException) {
-            return new ResponseWrapper(null, "invalid-code", invalidCodeException.getMessage());
+            return new ResponseWrapper<>(null, "invalid-code", invalidCodeException.getMessage());
         } catch (IOException ioException) {
-            return new ResponseWrapper(null, "email-sending-failed", "Email sending failed");
+            return new ResponseWrapper<>(null, "email-sending-failed", "Email sending failed");
         } catch (Exception e) {
-            return new ResponseWrapper(null, "failed", "Something went wrong! Please contact developer");
+            return new ResponseWrapper<>(null, "failed", "Something went wrong! Please contact developer");
         }
     }
 
     @PostMapping(value = "/password/forgot")
     public Object forgotPassword(@RequestParam("email") String email) {
         try{
-            return new ResponseWrapper(authService.forgotPassword(email), "success", "Forgot password request success");
+            return new ResponseWrapper<>(authService.forgotPassword(email), "success", "Forgot password request success");
         } catch(IOException ioException){
-            return new ResponseWrapper(null, "email-sending-failed", "Email sending failed");
+            return new ResponseWrapper<>(null, "email-sending-failed", "Email sending failed");
         } catch (InvalidCredentialsException invalidCredentialsException) {
-            return new ResponseWrapper(null, "wrong-email", invalidCredentialsException.getMessage());
+            return new ResponseWrapper<>(null, "wrong-email", invalidCredentialsException.getMessage());
         } catch(Exception e){
-            return new ResponseWrapper(null, "failed", "Something went wrong! Please contact developer");
+            return new ResponseWrapper<>(null, "failed", "Something went wrong! Please contact developer");
         }
     }
 
     @PostMapping(value = "/password/verify-code")
     public Object verifyResetCode(@RequestParam("email") String email, @RequestParam("resetCode") String resetCode) {
         try{
-            return new ResponseWrapper(authService.checkPasswordVerifyCode(email, resetCode), "success", "Forgot password request success");
+            return new ResponseWrapper<>(authService.checkPasswordVerifyCode(email, resetCode), "success", "Forgot password request success");
         } catch (InvalidCodeException invalidCodeException) {
-            return new ResponseWrapper(null, "invalid-code", invalidCodeException.getMessage());
+            return new ResponseWrapper<>(null, "invalid-code", invalidCodeException.getMessage());
         } catch (Exception e) {
-            return new ResponseWrapper(null, "failed", "Something went wrong! Please contact developer");
+            return new ResponseWrapper<>(null, "failed", "Something went wrong! Please contact developer");
         }
     }
 
     @PostMapping(value = "/password/reset")
     public Object verifyResetCode(@RequestParam("email") String email, @RequestParam("resetCode") String resetCode, @RequestParam("newPassword") String newPassword) {
         try{
-            return new ResponseWrapper(authService.resetPassword(email, resetCode, newPassword), "success", "Password resettled successfully");
+            return new ResponseWrapper<>(authService.resetPassword(email, resetCode, newPassword), "success", "Password resettled successfully");
         }catch (IOException ioException) {
-            return new ResponseWrapper(null, "email-sending-failed", "Email sending failed");
+            return new ResponseWrapper<>(null, "email-sending-failed", "Email sending failed");
         } catch (InvalidCodeException invalidCodeException) {
-            return new ResponseWrapper(null, "invalid-code", invalidCodeException.getMessage());
+            return new ResponseWrapper<>(null, "invalid-code", invalidCodeException.getMessage());
         } catch (InvalidCredentialsException invalidCredentialsException) {
-            return new ResponseWrapper(null, "wrong-email", invalidCredentialsException.getMessage());
+            return new ResponseWrapper<>(null, "wrong-email", invalidCredentialsException.getMessage());
         } catch (Exception exception){
-            return new ResponseWrapper(null, "failed", "Something went wrong! Please contact developer");
+            return new ResponseWrapper<>(null, "failed", "Something went wrong! Please contact developer");
         }
 
     }

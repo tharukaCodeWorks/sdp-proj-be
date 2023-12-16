@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 		Role role = roleServiceImpl.getById(userRoleId);
 		Set<Permission> roles = new HashSet<>(role.getPermissions());
 		user.setPermissions(roles);
-		user.setUserRole(role);
+		user.setRole(role);
 		user = userDao.save(user);
 		return  user;
 	}

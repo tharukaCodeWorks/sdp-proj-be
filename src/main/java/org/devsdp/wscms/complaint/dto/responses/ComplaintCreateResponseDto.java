@@ -1,4 +1,5 @@
 package org.devsdp.wscms.complaint.dto.responses;
 
-public class ComplaintResponseDto {
+public class ComplaintCreateResponseDto {
+
 }
