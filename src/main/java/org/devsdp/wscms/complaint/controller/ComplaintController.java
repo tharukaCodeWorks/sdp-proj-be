@@ -50,10 +50,13 @@ public class ComplaintController {
 
     // added by Prasad
     @GetMapping(value = "/view-all")
-    public ResponseEntity<ResponseWrapper> viewComplaints(int userId,HttpServletRequest request) {
+    public ResponseEntity<?> viewComplaints(int userId, HttpServletRequest request) {
 //        User user = tokenProvider.getAuthUser(request);
-        List<Complaint> complaints = this.complaintService.getComplaints(1);
+        List<Complaint> complaints = this.complaintService.getComplaints(userId);
         List<ComplaintViewResponseDto> resComplaintList = new ArrayList<>();
+        if (complaints.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         for (Complaint complaint : complaints) {
             ComplaintViewResponseDto responseDto = new ComplaintViewResponseDto();
             responseDto.setId(complaint.getId());
