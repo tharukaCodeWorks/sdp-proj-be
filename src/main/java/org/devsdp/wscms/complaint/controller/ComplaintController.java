@@ -71,8 +71,11 @@ public class ComplaintController {
     }
 
     @GetMapping(value = "/get-progress")
-    public ResponseEntity<ResponseWrapper> viewComplaintProgress(int complaintId) {
+    public ResponseEntity<?> viewComplaintProgress(int complaintId) {
         List<ComplaintProgress> complainProgressList = this.complaintService.getComplainProgressList(complaintId);
+        if (complainProgressList.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         List<ComplaintProgressResDto> resCompProList = new ArrayList<>();
         for (ComplaintProgress cp : complainProgressList) {
             ComplaintProgressResDto cprd = new ComplaintProgressResDto();
